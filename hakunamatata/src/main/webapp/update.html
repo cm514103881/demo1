@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改页面</title>
+</head>
+<script src="js/jquery.min.js"></script>
+<script src="js/getParameter.js"></script>
+
+<script>
+    $(function () {
+        var id = getParameter("id");
+        $.ajax({
+            url:"updateServlet/queryBook",
+            type:"POST",
+            data:{"id":id},
+            success:function (data) {
+                alert(data.name);
+                $("#id").val(data.id);
+                $("#name").val(data.name);
+                $("#author").val(data.author);
+                $("#price").val(data.price);
+
+            }
+        });
+
+        $("#sub").click(function () {
+            $.ajax({
+                url:"updateServlet/UpdateBook",
+                type:"POST",
+                data:$("#form").serialize(),
+                success:function (data) {
+                    if (data){
+                        alert("修改成功!");
+                        location.href = "list.html";
+                    }else {
+                        alert("修改失败!书名重复!");
+
+                    }
+                }
+            });
+        });
+    });
+</script>
+<body>
+    <div align="center">
+        <h1>修改表单</h1>
+        <form action="list.html" id="form" method="post">
+            <input type="hidden" name="id" id="id">
+            <table>
+                <tr>
+                    <td>书籍名称</td>
+                    <td><input type="text" id="name" name="name"></td>
+                </tr>
+                <tr>
+                    <td>作者</td>
+                    <td><input type="text" id="author" name="author"></td>
+                </tr>
+                <tr>
+                    <td>price</td>
+                    <td><input type="text" id="price" name="price"></td>
+                </tr>
+                <tr>
+                    <td><input type="reset" value="重置"></td>
+                    <td><input type="button" id="sub" value="提交"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+</html>
